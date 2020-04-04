@@ -1,7 +1,8 @@
 import React from "react";
-import { View, Text, StyleSheet, TextInput, Button } from "react-native";
+import { View, Text, StyleSheet, Button } from "react-native";
 import Card from "../components/Card";
 import Colors from "../../constants/colors";
+import Input from "../components/Input";
 
 export default function StartGameScreen() {
   return (
@@ -9,7 +10,14 @@ export default function StartGameScreen() {
       <Text style={styles.title}>Start a New Game!</Text>
       <Card style={styles.inputContainer}>
         <Text>Select a Number</Text>
-        <TextInput />
+        <Input
+          style={styles.input}
+          blueOnSubmit
+          autoCapitalize="none"
+          autoCorrent={false}
+          keyboardType="number-pad"
+          maxLength={2}
+        />
         <View style={styles.buttonContainer}>
           <View style={styles.button}>
             <Button title="Reset" onPress={() => {}} color={Colors.accent} />
@@ -44,5 +52,9 @@ const styles = StyleSheet.create({
     width: 100,
     // borderColor: "black",
     // borderWidth: 1,
+  },
+  input: {
+    width: 50,
+    textAlign: "center",
   },
 });
