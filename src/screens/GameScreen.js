@@ -6,6 +6,7 @@ import {
   Text,
   Alert,
   ScrollView,
+  FlatList,
 } from "react-native";
 import NumberContainer from "../components/NumberContainer";
 import Card from "../components/Card";
@@ -27,17 +28,17 @@ const generateRandomBetween = (min, max, exclude) => {
   }
 };
 
-const renderListItem = (value, numOfRound) => (
-  <View key={value} style={styles.listItem}>
-    <BodyText>#{numOfRound}</BodyText>
-    <BodyText>{value}</BodyText>
+const renderListItem = (listLength, itemData) => (
+  <View style={styles.listItem}>
+    <BodyText>#{listLength - itemData.index}</BodyText>
+    <BodyText>{itemData.item}</BodyText>
   </View>
 );
 
 export default function GameScreen({ userChoice, onGameOver }) {
   const initialGuess = generateRandomBetween(1, 100, userChoice);
   const [currentGuess, setCurrentGuess] = useState(initialGuess);
-  const [pastGuesses, setPastGuesses] = useState([initialGuess]);
+  const [pastGuesses, setPastGuesses] = useState([initialGuess.toString()]);
 
   const currentLow = useRef(1);
   const currentHigh = useRef(100);
@@ -70,7 +71,10 @@ export default function GameScreen({ userChoice, onGameOver }) {
       currentGuess
     );
     setCurrentGuess(nextNumber);
-    setPastGuesses((curPastGuesses) => [nextNumber, ...curPastGuesses]);
+    setPastGuesses((curPastGuesses) => [
+      nextNumber.toString(),
+      ...curPastGuesses,
+    ]);
   };
 
   return (
@@ -85,12 +89,13 @@ export default function GameScreen({ userChoice, onGameOver }) {
           <Ionicons name="md-add" size={24} color="white" />
         </MainButton>
       </Card>
-      <View style={styles.list}>
-        <ScrollView>
-          {pastGuesses.map((guess, i) =>
-            renderListItem(guess, pastGuesses.length - i)
-          )}
-        </ScrollView>
+      <View style={styles.listContainer}>
+        <FlatList
+          contentContainerStyle={styles.list}
+          keyExtractor={(item) => item}
+          data={pastGuesses}
+          renderItem={renderListItem.bind(null, pastGuesses.length)}
+        />
       </View>
     </View>
   );
@@ -110,8 +115,12 @@ const styles = StyleSheet.create({
     maxWidth: "90%",
   },
   list: {
+    flexGrow: 1,
+    justifyContent: "flex-end",
+  },
+  listContainer: {
     flex: 1,
-    width: "80%",
+    width: "60%",
   },
   listItem: {
     borderColor: "#ccc",
@@ -121,5 +130,6 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     flexDirection: "row",
     justifyContent: "space-between",
+    width: "100%",
   },
 });
