@@ -59,7 +59,10 @@ export default function StartGameScreen({ onStartGame }) {
       <Card style={styles.summaryContainer}>
         <Text>You selected</Text>
         <NumberContainer>{selectedNumber}</NumberContainer>
-        <Button title="START GAME" onPress={onStartGame} />
+        <Button
+          title="START GAME"
+          onPress={() => onStartGame(selectedNumber)}
+        />
       </Card>
     );
   }
