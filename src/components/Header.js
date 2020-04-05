@@ -3,9 +3,6 @@ import { StyleSheet, Text, View } from "react-native";
 import Colors from "../../constants/colors";
 
 export default function Header({ title }) {
-  console.log("title");
-  console.log(title);
-
   return (
     <View style={styles.header}>
       <Text style={styles.headerTitle}>{title}</Text>
